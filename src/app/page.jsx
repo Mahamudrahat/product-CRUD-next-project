@@ -1,6 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
-import { getProductList, deleteProduct, createProduct } from "../services/productService";
+import { MdDelete } from "react-icons/md";
+import { FaRegEdit } from "react-icons/fa";
+import {
+  getProductList,
+  deleteProduct,
+  createProduct,
+} from "../services/productService";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -35,9 +41,18 @@ export default function Home() {
 
   const handleAddProduct = async (e) => {
     e.preventDefault();
-    const product = { ...newProduct, TotalPrice: newProduct.Qty * newProduct.UnitPrice };
+    const product = {
+      ...newProduct,
+      TotalPrice: newProduct.Qty * newProduct.UnitPrice,
+    };
     await createProduct(product);
-    setNewProduct({ ProductName: "", ProductCode: "", Qty: "", UnitPrice: "", TotalPrice: "" });
+    setNewProduct({
+      ProductName: "",
+      ProductCode: "",
+      Qty: "",
+      UnitPrice: "",
+      TotalPrice: "",
+    });
     fetchProducts();
     setShowModal(false);
   };
@@ -54,7 +69,9 @@ export default function Home() {
             Product List
           </button>
           <button
-            className={`mr-4 ${activeTab === "CreateProduct" ? "font-bold" : ""}`}
+            className={`mr-4 ${
+              activeTab === "CreateProduct" ? "font-bold" : ""
+            }`}
             onClick={() => setShowModal(true)}
           >
             Create Product
@@ -65,16 +82,30 @@ export default function Home() {
       {/* Main Content */}
       {activeTab === "ProductList" && (
         <div>
-          <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">Product List</h1>
+          <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
+            Product List
+          </h1>
           <table className="min-w-full table-auto border-collapse border border-gray-200 shadow-lg">
             <thead>
               <tr className="bg-gray-100">
-                <th className="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-600">Product Name</th>
-                <th className="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-600">Code</th>
-                <th className="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-600">Quantity</th>
-                <th className="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-600">Unit Price</th>
-                <th className="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-600">Total Price</th>
-                <th className="border border-gray-300 px-4 py-2 text-center text-sm font-medium text-gray-600">Actions</th>
+                <th className="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-600">
+                  Product Name
+                </th>
+                <th className="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-600">
+                  Code
+                </th>
+                <th className="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-600">
+                  Quantity
+                </th>
+                <th className="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-600">
+                  Unit Price
+                </th>
+                <th className="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-600">
+                  Total Price
+                </th>
+                <th className="border border-gray-300 px-4 py-2 text-center text-sm font-medium text-gray-600">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -83,24 +114,36 @@ export default function Home() {
                   key={product._id}
                   className="bg-white hover:bg-gray-50 transition duration-150"
                 >
-                  <td className="border border-gray-300 px-4 py-2 text-sm text-gray-700">{product.ProductName}</td>
-                  <td className="border border-gray-300 px-4 py-2 text-sm text-gray-700">{product.ProductCode}</td>
-                  <td className="border border-gray-300 px-4 py-2 text-sm text-gray-700">{product.Qty}</td>
-                  <td className="border border-gray-300 px-4 py-2 text-sm text-gray-700">{product.UnitPrice}</td>
-                  <td className="border border-gray-300 px-4 py-2 text-sm text-gray-700">{product.TotalPrice}</td>
+                  <td className="border border-gray-300 px-4 py-2 text-sm text-gray-700">
+                    {product.ProductName}
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2 text-sm text-gray-700">
+                    {product.ProductCode}
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2 text-sm text-gray-700">
+                    {product.Qty}
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2 text-sm text-gray-700">
+                    {product.UnitPrice}
+                  </td>
+                  <td className="border border-gray-300 px-4 py-2 text-sm text-gray-700">
+                    {product.TotalPrice}
+                  </td>
                   <td className="border border-gray-300 px-4 py-2 text-center">
-                    <button
-                      className="bg-red-500 text-white px-4 py-1 rounded-md text-sm hover:bg-red-600 transition duration-150"
-                      onClick={() => handleDelete(product._id)}
-                    >
-                      Delete
-                    </button>
-                    <a
-                      href={`/edit/${product._id}`}
-                      className="ml-3 bg-blue-500 text-white px-4 py-1 rounded-md text-sm hover:bg-blue-600 transition duration-150"
-                    >
-                      Edit
-                    </a>
+                    <div className="flex items-center justify-center space-x-4">
+                      <button
+                        className="text-red-500 hover:text-red-700 transition duration-150"
+                        onClick={() => handleDelete(product._id)}
+                      >
+                        <MdDelete size={24} />
+                      </button>
+                      <a
+                        href={`/edit/${product._id}`}
+                        className="flex items-center text-blue-500 hover:text-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <FaRegEdit className="text-xl" />
+                      </a>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -113,7 +156,9 @@ export default function Home() {
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-md shadow-md w-96">
-            <h2 className="text-xl font-semibold text-gray-700 mb-4">Create Product</h2>
+            <h2 className="text-xl font-semibold text-gray-700 mb-4">
+              Create Product
+            </h2>
             <form onSubmit={handleAddProduct}>
               <div className="mb-4">
                 <input
